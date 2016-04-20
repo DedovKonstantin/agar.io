@@ -80,7 +80,7 @@ void Game::Run()
 				window.close();
 				continue;
 			}
-			if (Keyboard::isKeyPressed(Keyboard::Escape))
+			if (window.hasFocus() && Keyboard::isKeyPressed(Keyboard::Escape))
 			{
 				window.close();
 				continue;
