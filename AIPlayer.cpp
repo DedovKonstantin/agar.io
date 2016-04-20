@@ -58,7 +58,13 @@ void AIPlayer::Update(const RenderWindow& window)
 	vector<UnitPosition> nearunits = GetNearUnits();
 
 	const Pellet * nearestpellet = nullptr;
-	Unit::PositionType nearestDistance;
+	const Fraction * nearestfraction = nullptr;
+	const Virus * nearestvirus = nullptr;
+	Unit::PositionType nearestDistanceForPellet_sqr;
+	Unit::PositionType nearestDistanceForFraction_sqr;
+	Unit::PositionType nearestDistanceForVirus_sqr;
+
+
 	for each(UnitPosition up in nearunits)
 	{
 		if (up.unit->GetType() == Unit::UnitType::Cell)
@@ -66,22 +72,57 @@ void AIPlayer::Update(const RenderWindow& window)
 			for each(Cell *cell in GetCells())
 				if (cell->GetMass() > up.unit->GetMass() * 4)
 				{
-					mouseposition = (Vector2i)up.unit->GetPosition();// -window.getPosition() - SHIFT_WINDOW;
+					mouseposition = (Vector2i)up.unit->GetPosition();
 					actions.push(Action::Divide);
 					return;
 				}
 		}
+
+
 		for each (Cell * cell in GetCells())
-			if ((nearestpellet == nullptr || GetDistance_sqr(cell, up.unit) < nearestDistance) && up.unit->GetType() == Unit::UnitType::Pellet)
+		{
+			if ((up.unit->GetType() == Unit::UnitType::Pellet) 
+				&& (nearestpellet == nullptr || GetDistance_sqr(cell, up.unit) < nearestDistanceForPellet_sqr))
 			{
 				nearestpellet = dynamic_cast<const Pellet *>(up.unit);
-				nearestDistance = GetDistance_sqr(cell, up.unit);
+				nearestDistanceForPellet_sqr = GetDistance_sqr(cell, up.unit);
+			}
+			if ((up.unit->GetType() == Unit::UnitType::Fraction) 
+				&& (nearestfraction == nullptr || GetDistance_sqr(cell, up.unit) < nearestDistanceForFraction_sqr))
+			{
+				nearestfraction = dynamic_cast<const Fraction *>(up.unit);
+				nearestDistanceForFraction_sqr = GetDistance_sqr(cell, up.unit);
+			}
+			if ((up.unit->GetType() == Unit::UnitType::Virus)
+				&& (nearestvirus == nullptr || GetDistance_sqr(cell, up.unit) < nearestDistanceForVirus_sqr))
+			{
+				nearestvirus = dynamic_cast<const Virus *>(up.unit);
+				nearestDistanceForVirus_sqr = GetDistance_sqr(cell, up.unit);
+			}
+		}
+	}
+
+	if (nearestvirus)
+	{
+		for each (Cell * cell in GetCells())
+			if (cell->GetMass() > nearestvirus->GetMass() && (GetDistance_sqr(nearestvirus, cell) < sqr(5*cell->GetRadius())))
+			{
+				mouseposition = 2 * (Vector2i)cell->GetPosition() - (Vector2i)nearestvirus->GetPosition();
+				return;
 			}
 	}
 
 	if (nearestpellet)
 	{
-		mouseposition = (Vector2i)nearestpellet->GetPosition();// -window.getPosition() - SHIFT_WINDOW;
+		if (nearestfraction && nearestDistanceForFraction_sqr < nearestDistanceForPellet_sqr * 4)
+			mouseposition = (Vector2i)nearestfraction->GetPosition();
+		else
+			mouseposition = (Vector2i)nearestpellet->GetPosition();
+		return;
+	}
+	if (nearestfraction)
+	{
+		mouseposition = (Vector2i)nearestfraction->GetPosition();
 		return;
 	}
 	if (timerForMousePosition.getElapsedTime().asMilliseconds() > 500)
