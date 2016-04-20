@@ -493,7 +493,7 @@ void Field::Draw(RenderWindow& window)
 		mass.setPosition(position);
 		mass.setCharacterSize(characterSize);
 		playerColor = cells[i]->GetPlayer()->GetColor();
-		name.setColor(Color(0xFF - playerColor.r, 0xFF - playerColor.g, 0xFF - playerColor.b));
+		mass.setColor(Color(0xFF - playerColor.r, 0xFF - playerColor.g, 0xFF - playerColor.b));
 		window.draw(mass);
 	}
 
