@@ -37,7 +37,7 @@ Game::Game(Vector2<size_t> size)
 	field = new Field(size);
 	countUnits.pellets = 0;
 	countUnits.viruses = 0;
-	max_pellets = 90;
+	max_pellets = 180;
 	max_viruses = 2;
 }
 
@@ -47,7 +47,7 @@ void Game::Run()
 	Clock clk;
 	Thread command(&Game::Console, this);
 
-	//TODO Û·‡Ú¸
+	//TODO —É–±—Ä–∞—Ç—å
 	CommandWithParameters c;
 	c.command = Command::AddPlayer;
 	c.color = Color(255, 0, 0);
@@ -318,7 +318,15 @@ void Game::Step(const RenderWindow& window)
 			DeletePlayer(i);
 	}
 	for each(Player * player in players.Get())
+	{
 		UpdateAccelerationForPlayer(player, window);
+		size_t pediod_mls = player->GetTimeInTheGame().getElapsedTime().asMilliseconds()
+				- player->GetLastUpdateMass();
+		for each(Cell *cell in player->GetCells())
+			UpdateMassForCell(cell, pediod_mls);
+
+		player->UpdateLastUpdateMass(pediod_mls / 1000 * 1000);
+	}
 	players.Unlock();
 	while (countUnits.pellets < max_pellets)
 	{
@@ -620,7 +628,7 @@ void Game::Console()
 				{
 					Int64 red, green, blue;
 					cout << "Color: ";
-					//TODO —‰ÂÎ‡Ú¸ ÌÓÏ‡Î¸ÌÛ˛ Â‡ÍˆË˛ Ì‡ ‚‚Ó‰ ÌÂˆËÙÓ‚˚ı ÒËÏ‚ÓÎÓ‚
+					//TODO –°–¥–µ–ª–∞—Ç—å –Ω–æ—Ä–º–∞–ª—å–Ω—É—é —Ä–µ–∞–∫—Ü–∏—é –Ω–∞ –≤–≤–æ–¥ –Ω–µ—Ü–∏—Ñ—Ä–æ–≤—ã—Ö —Å–∏–º–≤–æ–ª–æ–≤
 					cin >> red >> green >> blue;
 
 					while (red < 0 || red > 0xFF || green < 0 || green > 0xFF || blue < 0 || blue > 0xFF)
@@ -844,6 +852,30 @@ void Game::SetMaximumOfViruses(size_t value)
 	cout << "Set maximum of viruses: " << value;
 
 	max_viruses = value;
+}
+void Game::UpdateMassForCell(Cell *cell, size_t pediod_mls)
+{
+	size_t mass = cell->GetMass();
+	size_t newmass;
+	size_t period_s = pediod_mls / 1000;
+	
+	//TODO —É–±—Ä–∞—Ç—å –º–∞–≥–∏—á–µ—Å–∫–∏–µ —á–∏—Å–ª–∞
+	if (mass <= 10)
+		newmass = mass;
+	else if (mass <= 100)
+		if (mass > period_s)
+			newmass = (mass - period_s);
+		else
+			newmass = 10;
+	else if (mass <= 200)
+		if (mass > 2 * period_s)
+			newmass = (mass - 2 * period_s);
+		else
+			newmass = 10;
+	else
+		newmass = 200;
+
+	cell->SetMass(newmass);
 }
 Game::~Game()
 {
