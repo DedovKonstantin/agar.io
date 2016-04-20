@@ -49,7 +49,7 @@ public:
 			message += number[number.size() - i - 1] + '0';
 		return *this;
 	}
-	const MyString getMessage()const
+	const MyString& getMessage()const
 	{
 		return message;
 	}
