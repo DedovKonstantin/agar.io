@@ -278,7 +278,7 @@ void Field::Update(Time time)
 {
 	DeleteUnit(nullptr);
 
-	//TODO переделать
+	//TODO РїРµСЂРµРґРµР»Р°С‚СЊ
 	sleep(sf::milliseconds(1));
 
 	for each (Cell * unit in cells)
@@ -372,7 +372,7 @@ void Field::Update(Time time)
 		leadPositionAndSpeed(viruses[i]);
 	}
 
-	//Для pellets обновление не требуется
+	//Р”Р»СЏ pellets РѕР±РЅРѕРІР»РµРЅРёРµ РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ
 }
 
 void Field::Draw(RenderWindow& window, const Player& player)
@@ -526,27 +526,28 @@ Vector2<size_t> Field::GetSize() const
 }
 void Field::leadPositionAndSpeed(Unit* unit)
 {
+	static const long double elasticity = (long double)2/3;
 	Vector2<Unit::PositionType> newpos		= unit->GetPosition();
 	Vector2<Unit::SpeedType>	newspeed	= unit->GetSpeed();
 	if (newpos.x < 0)
 	{
 		newpos.x = 0;
-		newspeed = Vector2<Unit::SpeedType>(-newspeed.x, newspeed.y);
+		newspeed = Vector2<Unit::SpeedType>(-newspeed.x * elasticity, newspeed.y * elasticity);
 	}
 	if (newpos.y < 0)
 	{
 		newpos.y = 0;
-		newspeed = Vector2<Unit::SpeedType>(newspeed.x, -newspeed.y);
+		newspeed = Vector2<Unit::SpeedType>(newspeed.x * elasticity, -newspeed.y * elasticity);
 	}
 	if (newpos.x >= size.x)
 	{
 		newpos.x = size.x - 1;
-		newspeed = Vector2<Unit::SpeedType>(-newspeed.x, newspeed.y);
+		newspeed = Vector2<Unit::SpeedType>(-newspeed.x * elasticity, newspeed.y * elasticity);
 	}
 	if (newpos.y >= size.y)
 	{
 		newpos.y = size.y - 1;
-		newspeed = Vector2<Unit::SpeedType>(newspeed.x, -newspeed.y);
+		newspeed = Vector2<Unit::SpeedType>(newspeed.x * elasticity, -newspeed.y * elasticity);
 	}
 
 	unit->SetPosition(newpos);
