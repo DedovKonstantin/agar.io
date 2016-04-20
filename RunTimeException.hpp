@@ -24,11 +24,6 @@ public:
 	~RunTimeException()
 	{
 	}
-	friend ostream& operator<<(ostream& os, const RunTimeException& exc)
-	{
-		os << exc.message;
-		return os;
-	}
 	RunTimeException& operator<<(const MyString& ms)
 	{
 		for (size_t i = 0; i < ms.getLength(); ++i)
@@ -54,4 +49,13 @@ public:
 			message += number[number.size() - i - 1] + '0';
 		return *this;
 	}
+	const MyString getMessage()const
+	{
+		return message;
+	}
 };
+inline ostream& operator<<(ostream& os, const RunTimeException& exc)
+{
+	os << exc.getMessage();
+	return os;
+}
