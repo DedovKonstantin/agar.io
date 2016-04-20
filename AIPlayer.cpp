@@ -128,7 +128,7 @@ void AIPlayer::Update(const RenderWindow& window)
 	if (timerForMousePosition.getElapsedTime().asMilliseconds() > 500)
 	{
 		mouseposition =   
-			+sign((Int32)GetRandomNumber(0, 20) - 10)*Vector2i(GetRandomNumber(0, 10000), GetRandomNumber(0, 10000));
+			sign((Int32)GetRandomNumber(0, 20) - 10)*Vector2i(GetRandomNumber(0, 10000), GetRandomNumber(0, 10000));
 		timerForMousePosition.restart();
 	}
 
