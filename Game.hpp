@@ -86,7 +86,7 @@ private:
 
 	bool CanAbsorb(Cell *cell1, Cell *cell2)const;
 
-	//Поглощает та, у которой больше масса
+	//РџРѕРіР»РѕС‰Р°РµС‚ С‚Р°, Сѓ РєРѕС‚РѕСЂРѕР№ Р±РѕР»СЊС€Рµ РјР°СЃСЃР°
 	void Absorb(Cell *cell1, Cell *cell2);
 
 	bool CanAbsorb(Cell *cell, Fraction *fraction)const;
@@ -102,6 +102,8 @@ private:
 
 	void SetMaximumOfPellets(size_t value);
 	void SetMaximumOfViruses(size_t value);
+
+	void UpdateMassForCell(Cell *cell, size_t pediod_mls);
 
 public:
 	void Run();
