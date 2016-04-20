@@ -34,7 +34,7 @@ public:
 	virtual void SetMass(size_t value);
 	Vector2<PositionType> GetPosition()const;
 	void SetPosition(Vector2<PositionType> value);
-	Shape *GetSprite()const;
+	const Shape *GetSprite()const;
 	virtual void SetSpritePosition(Vector2f value);
 
 
