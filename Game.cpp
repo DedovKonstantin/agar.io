@@ -605,8 +605,8 @@ void Game::Console()
 		static const MyString DELETE_PLAYER			= "DELETEPLAYER";
 		static const MyString SET_CURRENT_PLAYER	= "SETCURRENTPLAYER";
 		static const MyString HELP					= "HELP";
-		static const MyString SET_MAX_PELLETS		= "SETMAXPELLETS";
-		static const MyString SET_MAX_VIRUSES		= "SETMAXVIRUSES";
+		static const MyString SET_MIN_PELLETS		= "SETMINPELLETS";
+		static const MyString SET_MIN_VIRUSES		= "SETMINVIRUSES";
 
 		MyString command;
 
@@ -755,7 +755,7 @@ void Game::Console()
 				command.doForEach(toupper);
 				continue;
 			}
-			if (command == SET_MAX_PELLETS)
+			if (command == SET_MIN_PELLETS)
 			{
 				size_t newvalue;
 				cout << "Set max pellets: ";
@@ -766,7 +766,7 @@ void Game::Console()
 				command.doForEach(toupper);
 				continue;
 			}
-			if (command == SET_MAX_VIRUSES)
+			if (command == SET_MIN_VIRUSES)
 			{
 				size_t newvalue;
 				cout << "Set max viruses: ";
@@ -781,13 +781,13 @@ void Game::Console()
 			if (command == HELP)
 			{
 				cout << "Commands: " << endl;
-				cout << "EXIT" << endl;
-				cout << "ADDPLAYER" << endl;
-				cout << "DELETEPLAYER" << endl;
-				cout << "SETCURRENTPLAYER" << endl;
-				cout << "SETMAXPELLETS" << endl;
-				cout << "SETMAXVIRUSES" << endl;
-				cout << "HELP" << endl;
+				cout << EXIT << endl;
+				cout << ADD_PLAYER << endl;
+				cout << DELETE_PLAYER << endl;
+				cout << SET_CURRENT_PLAYER << endl;
+				cout << SET_MIN_PELLETS << endl;
+				cout << SET_MIN_VIRUSES << endl;
+				cout << HELP << endl;
 			}
 			cout << "Error. Print help for help." << endl;
 			cin >> command;
