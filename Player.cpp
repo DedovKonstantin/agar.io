@@ -16,7 +16,7 @@ const Int32			Player::TIME_FOR_QUICK_SPEED_VIRUS_MLS		= 400				;
 const sf::Vector2i	Player::SHIFT_WINDOW						= Vector2i(7, 28)	;
 
 Player::Player(const MyString name, const Font *font, Color color, const Field *field)
-	:name(name), font(font), color(color), field(field), divisioned(false), ejected(false)
+	:name(name), font(font), color(color), field(field), divisioned(false), ejected(false), lastUpdateMass_mls(0)
 {
 	Vector2<Unit::PositionType>position;
 	position.x = GetRandomNumber(0, field->GetSize().x - 1);
@@ -26,6 +26,8 @@ Player::Player(const MyString name, const Font *font, Color color, const Field *
 	size_t mass = GetRandomNumber(Game::INITIAL_MASS_OF_CELL_MIN, Game::INITIAL_MASS_OF_CELL_MAX);
 	Cell *newcell = new Cell(position, Vector2<Unit::SpeedType>(0, 0), mass, this);
 	cells.push_back(newcell);
+
+	timeInTheGame.restart();
 }
 
 void Player::DeleteCell(Cell *cell)
@@ -159,4 +161,19 @@ Vector2<Unit::PositionType> Player::GetPositionOnScreenForShift() const
 	result.y /= cells.size();
 
 	return result;
+}
+
+Clock Player::GetTimeInTheGame() const
+{
+	return timeInTheGame;
+}
+
+size_t Player::GetLastUpdateMass() const
+{
+	return lastUpdateMass_mls;
+}
+
+void Player::UpdateLastUpdateMass(size_t mls)
+{
+	lastUpdateMass_mls += mls;
 }
