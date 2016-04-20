@@ -43,6 +43,9 @@ protected:
 	Clock lastEject;
 	bool ejected;
 
+	Clock timeInTheGame;
+	size_t lastUpdateMass_mls;
+
 public:
 	virtual void Update(const RenderWindow& window) = 0;
 	explicit Player(const MyString name, const Font *font, Color color, const Field *field);
@@ -69,6 +72,10 @@ public:
 	virtual Vector2i GetMousePosition(const RenderWindow& window) const = 0;
 	virtual PlayerType::_PlayerType GetType() const = 0;
 	Vector2<Unit::PositionType> GetPositionOnScreenForShift() const;
+
+	Clock GetTimeInTheGame() const;
+	size_t GetLastUpdateMass() const;
+	void UpdateLastUpdateMass(size_t mls);
 
 	virtual ~Player();
 };
