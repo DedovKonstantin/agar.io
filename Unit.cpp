@@ -15,7 +15,7 @@ size_t Unit::GetMass()const
 {
 	return mass;
 }
-Shape *Unit::GetSprite()const
+const Shape *Unit::GetSprite()const
 {
 	return sprite;
 }
