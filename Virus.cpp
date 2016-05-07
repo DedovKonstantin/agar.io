@@ -40,9 +40,9 @@ void Virus::SetMass(size_t value)
 	mass = value;
 	dynamic_cast<CircleShape *>(sprite)->setRadius((float)RadiusFromMass(mass));
 }
-Unit::UnitType::_UnitType Virus::GetType()const
+Unit::UnitType Virus::GetType()const
 {
-	return Unit::UnitType::_UnitType::Virus;
+	return Unit::UnitType::Virus;
 }
 bool Virus::CanDivide()const
 {
@@ -87,6 +87,10 @@ vector<Cell *> Virus::Attack(Cell *cell)
 
 	if (masscell < 2 * massOfCellAfterAttack)
 		throw RunTimeException() << "Exception: FILE: " <<__FILE__ << "; LINE = " << __LINE__;
+
+	//TODO разобраться, почему вылетает такое исключение
+	if(masscell > 200)
+		throw RunTimeException() << "Exception: FILE: " << __FILE__ << "; LINE = " << __LINE__;
 
 	player->SetTimeAsAfterDivision();
 	while (masscell >= 2 * massOfCellAfterAttack)
