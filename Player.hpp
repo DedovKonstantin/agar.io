@@ -6,6 +6,7 @@
 #include <vector>
 #include <queue>
 #include "Unit.hpp"
+#include "GameMode.hpp"
 
 using namespace sf;
 using namespace std;
@@ -23,10 +24,7 @@ public:
 
 	static const Vector2i SHIFT_WINDOW;
 
-	struct PlayerType
-	{
-		enum _PlayerType {Human, AI};
-	};
+	enum class PlayerType { Human, AI };
 
 protected:
 	MyString name;
@@ -60,8 +58,8 @@ public:
 	bool GetEjected()const;
 	void SetTimeAsAfterDivision();
 
-	vector<Cell *> Division(const RenderWindow& window);
-	vector<Fraction *> EjectFraction(const RenderWindow& window);
+	vector<Cell *> Division(const RenderWindow& window, GameMode gamemode);
+	vector<Fraction *> EjectFraction(const RenderWindow& window, GameMode gamemode);
 
 	void DeleteCell(Cell *cell);
 	void AddCell(Cell *cell);
@@ -69,9 +67,9 @@ public:
 	Color GetColor()const;
 	const Font* GetFont();
 
-	virtual Vector2i GetMousePosition(const RenderWindow& window) const = 0;
-	virtual PlayerType::_PlayerType GetType() const = 0;
-	Vector2<Unit::PositionType> GetPositionOnScreenForShift() const;
+	virtual Vector2i GetMousePosition(const RenderWindow& window, GameMode mode) const = 0;
+	virtual PlayerType GetType() const = 0;
+	Vector2<Unit::PositionType> GetPositionOnScreenForShift(const RenderWindow& window) const;
 
 	Clock GetTimeInTheGame() const;
 	size_t GetLastUpdateMass() const;
